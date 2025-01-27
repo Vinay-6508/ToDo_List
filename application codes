@@ -1,1 +1,87 @@
+def display_menu():
+    print("\nTo-Do List Application")
+    print("1. Create a new list")
+    print("2. Add task to a list")
+    print("3. Delete task from a list")
+    print("4. View lists")
+    print("5. Delete a list")
+    print("6. Exit")
 
+def create_list(todo_lists):
+    title = input("Enter the title of the new list: ")
+    if title in todo_lists:
+        print("List with this title already exists.")
+    else:
+        todo_lists[title] = []
+        print(f"List '{title}' created.")
+
+def add_task(todo_lists):
+    title = input("Enter the title of the list to add a task: ")
+    if title in todo_lists:
+        task = input("Enter the task: ")
+        todo_lists[title].append(task)
+        print(f"Task added to list '{title}'.")
+    else:
+        print("List not found.")
+
+def delete_task(todo_lists):
+    title = input("Enter the title of the list to delete a task from: ")
+    if title in todo_lists:
+        for idx, task in enumerate(todo_lists[title], start=1):
+            print(f"{idx}. {task}")
+        try:
+            task_number = int(input("Enter the task number to delete: "))
+            if 1 <= task_number <= len(todo_lists[title]):
+                removed_task = todo_lists[title].pop(task_number - 1)
+                print(f"Task '{removed_task}' removed from list '{title}'.")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Please enter a valid number.")
+    else:
+        print("List not found.")
+
+def view_lists(todo_lists):
+    if not todo_lists:
+        print("No lists available.")
+    else:
+        for title, tasks in todo_lists.items():
+            print(f"\nTitle: {title}")
+            if tasks:
+                for idx, task in enumerate(tasks, start=1):
+                    print(f"  {idx}. {task}")
+            else:
+                print("  No tasks.")
+
+def delete_list(todo_lists):
+    title = input("Enter the title of the list to delete: ")
+    if title in todo_lists:
+        del todo_lists[title]
+        print(f"List '{title}' deleted.")
+    else:
+        print("List not found.")
+
+def main():
+    todo_lists = {}
+    while True:
+        display_menu()
+        choice = input("Choose an option (1-6): ")
+
+        if choice == '1':
+            create_list(todo_lists)
+        elif choice == '2':
+            add_task(todo_lists)
+        elif choice == '3':
+            delete_task(todo_lists)
+        elif choice == '4':
+            view_lists(todo_lists)
+        elif choice == '5':
+            delete_list(todo_lists)
+        elif choice == '6':
+            print("Exiting the application. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
